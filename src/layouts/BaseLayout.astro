@@ -1,0 +1,73 @@
+---
+import "../styles/global.css";
+
+const { title = "St. Agnes of Assisi Fraternity" } = Astro.props;
+const pathname = Astro.url.pathname;
+
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/about-ofs/", label: "About the OFS" },
+  { href: "/our-fraternity/", label: "Our Fraternity" },
+  { href: "/events/", label: "Events" },
+  { href: "/resources/", label: "Resources" },
+  { href: "/contact/", label: "Contact" },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="/">
+          <strong>St. Agnes of Assisi Fraternity</strong>
+          <span>Secular Franciscan Order · Tau Cross Region</span>
+        </a>
+        <nav class="nav" aria-label="Main">
+          {navItems.map((item) => (
+            <a
+              href={item.href}
+              aria-current={pathname === item.href ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <div class="container">
+        <slot />
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <strong>St. Agnes of Assisi Fraternity</strong>
+          <p>Secular Franciscan Order · Tau Cross Region</p>
+        </div>
+        <div>
+          <strong>Meetings</strong>
+          <p>Second Sunday of every month at 2:00 PM</p>
+          <p>Our Lady of Lourdes Parish, West Islip, NY</p>
+        </div>
+        <div>
+          <strong>Connect</strong>
+          <p>Email: <a href="mailto:ofs@example.org">ofs@example.org</a></p>
+          <p>Parish Office: (placeholder phone)</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

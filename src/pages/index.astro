@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const formatDate = (value) =>
+  new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(value);
+
+const rawAnnouncements = (await getCollection("announcements"))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+const announcements = await Promise.all(
+  rawAnnouncements.map(async (item) => {
+    const { Content } = await item.render();
+    return { ...item, Content };
+  })
+);
+---
+
+<BaseLayout title="St. Agnes of Assisi Fraternity | Home">
+  <section class="hero">
+    <h1>Welcome to the St. Agnes of Assisi Fraternity</h1>
+    <p>
+      We are the Secular Franciscan Order in the Tau Cross Region, gathering at
+      Our Lady of Lourdes Parish in West Islip, NY. All are welcome to learn
+      about the Franciscan way of life in the world.
+    </p>
+    <div class="info-grid">
+      <div class="card">
+        <h2 class="section-title">Meeting Time</h2>
+        <p>Second Sunday of every month at 2:00 PM</p>
+      </div>
+      <div class="card">
+        <h2 class="section-title">Location</h2>
+        <p>Our Lady of Lourdes Parish, West Islip, NY</p>
+      </div>
+      <div class="card">
+        <h2 class="section-title">Who We Are</h2>
+        <p>
+          Lay women and men who follow in the footsteps of St. Francis of Assisi,
+          living the Gospel through prayer, fraternity, and service.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" style="margin-top: 2rem;">
+    <h2 class="section-title">Announcements</h2>
+    {announcements.length === 0 ? (
+      <p>No announcements at this time. Please check back soon.</p>
+    ) : (
+      <div class="events-list">
+        {announcements.map((item) => (
+          <article class="event-item">
+            <h3>{item.data.title}</h3>
+            <p class="event-meta">{formatDate(item.data.date)}</p>
+            <item.Content />
+          </article>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>

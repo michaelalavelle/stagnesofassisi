@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const formatDate = (value) =>
+  new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(value);
+
+const rawEvents = (await getCollection("events")).sort(
+  (a, b) => a.data.date.getTime() - b.data.date.getTime()
+);
+
+const events = await Promise.all(
+  rawEvents.map(async (item) => {
+    const { Content } = await item.render();
+    return { ...item, Content };
+  })
+);
+---
+
+<BaseLayout title="Events | St. Agnes of Assisi Fraternity">
+  <section class="hero">
+    <h1>Events</h1>
+    <p>
+      We gather on the second Sunday of each month at 2:00 PM. Additional
+      gatherings, formation sessions, and regional events are listed below.
+    </p>
+  </section>
+
+  <section class="card" style="margin-top: 2rem;">
+    <h2 class="section-title">Upcoming Events</h2>
+    {events.length === 0 ? (
+      <p>No events have been posted yet. Please check back soon.</p>
+    ) : (
+      <div class="events-list">
+        {events.map((item) => (
+          <article class="event-item">
+            <h3>{item.data.title}</h3>
+            <p class="event-meta">
+              {formatDate(item.data.date)}
+              {item.data.location ? ` · ${item.data.location}` : ""}
+            </p>
+            <item.Content />
+          </article>
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>
