@@ -6,7 +6,7 @@ const formatDate = (value) =>
   new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(value);
 
 const wordpressFeedUrl =
-  "https://stagnesofassisiofs.wordpress.com/wp-json/wp/v2/posts?per_page=3&_fields=title,date,link,excerpt";
+  "https://public-api.wordpress.com/rest/v1.1/sites/stagnesofassisiofs.wordpress.com/posts/?number=3&fields=title,date,URL,excerpt";
 
 const getWordPressAnnouncements = async () => {
   try {
@@ -15,13 +15,17 @@ const getWordPressAnnouncements = async () => {
       return [];
     }
 
-    const posts = await response.json();
+    const payload = await response.json();
+    const posts = Array.isArray(payload?.posts) ? payload.posts : [];
     return posts.map((post) => ({
       source: "wordpress",
-      title: post?.title?.rendered?.trim() || "Announcement",
+      title:
+        (typeof post?.title === "string"
+          ? post.title.trim()
+          : post?.title?.rendered?.trim()) || "Announcement",
       date: new Date(post.date),
-      html: post?.excerpt?.rendered || "",
-      link: post.link,
+      html: post?.excerpt || "",
+      link: post.URL,
     }));
   } catch {
     return [];
@@ -48,6 +52,8 @@ const localAnnouncements = await Promise.all(
 
 const announcements =
   wordpressAnnouncements.length > 0 ? wordpressAnnouncements : localAnnouncements;
+const announcementsSource =
+  wordpressAnnouncements.length > 0 ? "WordPress feed" : "Local fallback";
 
 const ensureTrailingSlash = (value) => (value.endsWith("/") ? value : `${value}/`);
 const baseUrl = ensureTrailingSlash(import.meta.env.BASE_URL);
@@ -111,6 +117,7 @@ const contactUrl = `${baseUrl}contact/`;
 
   <section class="card" style="margin-top: 2rem;">
     <h2 class="section-title">Announcements</h2>
+    <p class="event-meta">Source: {announcementsSource}</p>
     {announcements.length === 0 ? (
       <p>No announcements at this time. Please check back soon.</p>
     ) : (
