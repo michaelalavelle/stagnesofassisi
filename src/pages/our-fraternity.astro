@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 const ensureTrailingSlash = (value) => (value.endsWith("/") ? value : `${value}/`);
 const baseUrl = ensureTrailingSlash(import.meta.env.BASE_URL);
 const brochureUrl = `${baseUrl}st-agnes-fraternity-brochure.pdf`;
+const leadershipPhoto = `${baseUrl}leadership.jpg`;
 ---
 
 <BaseLayout title="Our Fraternity | St. Agnes of Assisi Fraternity">
@@ -17,15 +18,14 @@ const brochureUrl = `${baseUrl}st-agnes-fraternity-brochure.pdf`;
   </section>
 
   <section class="card" style="margin-top: 2rem;">
-    <h2 class="section-title">Leadership (Placeholder)</h2>
-    <ul class="list">
-      <li>Minister: Name</li>
-      <li>Vice Minister: Name</li>
-      <li>Secretary: Name</li>
-      <li>Treasurer: Name</li>
-      <li>Formation Director: Name</li>
-      <li>Spiritual Assistant: Name</li>
-    </ul>
+    <h2 class="section-title">Leadership</h2>
+    <figure>
+      <img src={leadershipPhoto} alt="St. Agnes of Assisi Fraternity leadership" />
+      <figcaption>
+        Left to Right: Teresa, Rudy, Patricia, Richard, Jackie, Helene, Dan,
+        Jane (from the Regional Council), Brother Richard
+      </figcaption>
+    </figure>
   </section>
 
   <section class="card" style="margin-top: 2rem;">
