@@ -1,37 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import { fetchWordPressPostsByCategory } from "../lib/wordpress";
 
 const formatDate = (value) =>
   new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(value);
 
-const wordpressFeedUrl =
-  "https://public-api.wordpress.com/rest/v1.1/sites/stagnesofassisiofs.wordpress.com/posts/?number=3&fields=title,date,URL,excerpt";
-
-const getWordPressAnnouncements = async () => {
-  try {
-    const response = await fetch(wordpressFeedUrl);
-    if (!response.ok) {
-      return [];
-    }
-
-    const payload = await response.json();
-    const posts = Array.isArray(payload?.posts) ? payload.posts : [];
-    return posts.map((post) => ({
-      source: "wordpress",
-      title:
-        (typeof post?.title === "string"
-          ? post.title.trim()
-          : post?.title?.rendered?.trim()) || "Announcement",
-      date: new Date(post.date),
-      html: post?.excerpt || "",
-    }));
-  } catch {
-    return [];
-  }
-};
-
-const wordpressAnnouncements = await getWordPressAnnouncements();
+const wordpressAnnouncements = await fetchWordPressPostsByCategory("announcements", 3);
 
 const rawLocalAnnouncements = (await getCollection("announcements"))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())

@@ -1,20 +1,31 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
+import { fetchWordPressPostsByCategory } from "../lib/wordpress";
 
 const formatDate = (value) =>
   new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(value);
 
-const rawEvents = (await getCollection("events")).sort(
+const wordpressEvents = await fetchWordPressPostsByCategory("events", 50);
+
+const rawLocalEvents = (await getCollection("events")).sort(
   (a, b) => a.data.date.getTime() - b.data.date.getTime()
 );
 
-const events = await Promise.all(
-  rawEvents.map(async (item) => {
+const localEvents = await Promise.all(
+  rawLocalEvents.map(async (item) => {
     const { Content } = await item.render();
-    return { ...item, Content };
+    return {
+      source: "local",
+      title: item.data.title,
+      date: item.data.date,
+      location: item.data.location,
+      Content,
+    };
   })
 );
+
+const events = wordpressEvents.length > 0 ? wordpressEvents : localEvents;
 ---
 
 <BaseLayout title="Events | St. Agnes of Assisi Fraternity">
@@ -35,12 +46,12 @@ const events = await Promise.all(
       <div class="events-list">
         {events.map((item) => (
           <article class="event-item">
-            <h3>{item.data.title}</h3>
+            <h3>{item.title}</h3>
             <p class="event-meta">
-              {formatDate(item.data.date)}
-              {item.data.location ? ` - ${item.data.location}` : ""}
+              {formatDate(item.date)}
+              {item.source === "local" && item.location ? ` - ${item.location}` : ""}
             </p>
-            <item.Content />
+            {item.source === "wordpress" ? <div set:html={item.html}></div> : <item.Content />}
           </article>
         ))}
       </div>
