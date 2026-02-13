@@ -6,11 +6,15 @@ import { fetchWordPressPostsByCategory } from "../lib/wordpress";
 const formatDate = (value) =>
   new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(value);
 
-const wordpressAnnouncements = await fetchWordPressPostsByCategory("announcements", 3);
+const announcementsLimit = 10;
+const wordpressAnnouncements = await fetchWordPressPostsByCategory(
+  "announcements",
+  announcementsLimit
+);
 
 const rawLocalAnnouncements = (await getCollection("announcements"))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 3);
+  .slice(0, announcementsLimit);
 
 const localAnnouncements = await Promise.all(
   rawLocalAnnouncements.map(async (item) => {
