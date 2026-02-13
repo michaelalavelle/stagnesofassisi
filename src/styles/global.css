@@ -301,13 +301,16 @@ main {
 .site-footer {
   background: #efe6db;
   border-top: 1px solid var(--border);
-  padding: 2rem 0;
+  padding: 1.5rem 0;
   font-size: 0.95rem;
 }
 
-.footer-grid {
-  display: grid;
-  gap: 1rem;
+.footer-simple {
+  text-align: center;
+}
+
+.footer-simple p {
+  margin: 0.2rem 0;
 }
 
 @media (min-width: 720px) {
@@ -320,10 +323,6 @@ main {
   }
 
   .info-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .footer-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
