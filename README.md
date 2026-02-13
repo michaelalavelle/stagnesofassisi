@@ -136,6 +136,34 @@ npm run preview
   - `site: "https://michaelalavelle.github.io"`
   - `base: "/stagnesofassisi"`
 - Pushes to `main` trigger your configured Pages workflow/publish process.
+- Manual deploy trigger is enabled via GitHub Actions `workflow_dispatch`.
+
+### Manual Deploy Trigger (For Council Members)
+
+Use this when a new WordPress post is published and you want the website to refresh without a code change.
+
+Prerequisites:
+
+- Must have a GitHub account.
+- Must be added as a collaborator to this repo with permission to run workflows (typically `Write`).
+
+One-time setup:
+
+1. Repository owner invites the user as collaborator in GitHub repository settings.
+2. User accepts the invitation while logged in to GitHub.
+
+How to trigger deploy:
+
+1. Open: `https://github.com/michaelalavelle/stagnesofassisi/actions/workflows/deploy.yml`
+2. Click `Run workflow`.
+3. Choose branch `main`.
+4. Click `Run workflow`.
+5. Wait for the workflow to complete, then refresh the site.
+
+Notes:
+
+- This rebuild pulls latest WordPress category posts for Announcements and Events.
+- If the user cannot run the workflow, verify collaborator permissions and that they accepted the invite.
 
 ## Maintenance Notes
 
