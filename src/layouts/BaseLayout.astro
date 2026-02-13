@@ -35,16 +35,21 @@ const navItems = [
           <strong>St. Agnes of Assisi Fraternity</strong>
           <span>Secular Franciscan Order - Tau Cross Region</span>
         </a>
-        <nav class="nav" aria-label="Main">
-          {navItems.map((item) => (
-            <a
-              href={item.href}
-              aria-current={pathname === item.href ? "page" : undefined}
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
+        <details class="nav-toggle">
+          <summary class="nav-toggle-button" aria-label="Toggle navigation">
+            Menu
+          </summary>
+          <nav class="nav" aria-label="Main">
+            {navItems.map((item) => (
+              <a
+                href={item.href}
+                aria-current={pathname === item.href ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </details>
       </div>
     </header>
 
