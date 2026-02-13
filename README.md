@@ -11,9 +11,10 @@ Astro-based static website for the St. Agnes of Assisi Fraternity, OFS.
   - Events
   - Resources
   - Contact
-- Shows homepage announcements from WordPress.com at build time.
-- Falls back to local markdown announcements if WordPress is unavailable.
-- Renders events from local markdown content.
+- Pulls WordPress.com posts at build time and routes them by category:
+  - `Announcements` category -> Home page Announcements section
+  - `Events` category -> Events page Upcoming Events section
+- Falls back to local markdown content if WordPress is unavailable or no matching category posts are found.
 - Provides a working contact form via Formspree with client-side validation and inline error/success handling.
 - Uses responsive navigation (desktop nav + mobile menu) and shared site layout/styling.
 
@@ -27,30 +28,42 @@ Astro-based static website for the St. Agnes of Assisi Fraternity, OFS.
 ## Project Structure
 
 - `src/pages/` route pages
-  - `src/pages/index.astro` home page + announcement loading logic
-  - `src/pages/events.astro` events listing
+  - `src/pages/index.astro` home page + announcements rendering
+  - `src/pages/events.astro` events rendering
   - `src/pages/resources.astro` OFS links and essential documents
   - `src/pages/contact.astro` Formspree contact form
 - `src/layouts/BaseLayout.astro` shared header, nav, footer, metadata
 - `src/styles/global.css` global theme and component styles
+- `src/lib/wordpress.ts` WordPress fetch/filter/normalization helpers
 - `src/content/`
   - `announcements/` local fallback announcements
-  - `events/` event entries
+  - `events/` local fallback events
   - `config.ts` collection schemas
 - `public/` static files (images, PDFs, favicon)
 - `astro.config.mjs` site and base path for GitHub Pages
 
-## Homepage Announcements
+## WordPress Integration
 
-Primary source:
+Primary source endpoint:
 
 - WordPress.com REST API:
-  - `https://public-api.wordpress.com/rest/v1.1/sites/stagnesofassisiofs.wordpress.com/posts/?number=3&fields=title,date,URL,excerpt`
+  - `https://public-api.wordpress.com/rest/v1.1/sites/stagnesofassisiofs.wordpress.com/posts/?number=50&fields=title,date,content,categories,attachments`
 
 Behavior:
 
-- On build, homepage pulls latest 3 posts from WordPress.
-- If fetch fails or returns no posts, homepage uses local markdown files in `src/content/announcements/`.
+- Posts are filtered by category slug in `src/lib/wordpress.ts`.
+- Home announcements request category `announcements` and show up to 3 items.
+- Events page requests category `events` and shows matching items.
+- If WordPress fetch/filter returns no items, local content is used:
+  - Home fallback: `src/content/announcements/*.md`
+  - Events fallback: `src/content/events/*.md`
+
+WordPress content rendering:
+
+- Full post HTML content is rendered (not just excerpt).
+- WordPress file embed blocks are normalized into cleaner links.
+- File links are displayed with type and optional size when available, e.g. `(PDF, 248 KB)`.
+- Links are normalized to open in new tabs with `rel="noreferrer"`.
 
 ## Contact Form Behavior
 
@@ -71,9 +84,9 @@ File: `src/pages/contact.astro`
 
 File: `src/pages/events.astro`
 
-- Events are loaded from `src/content/events/*.md`
-- Sorted by date ascending
-- Rendered with title, date, optional location, and markdown body
+- Primary source is WordPress category `events` (build-time fetch).
+- Fallback source is `src/content/events/*.md` (sorted by date ascending).
+- Rendered with title/date and event body content.
 
 ## Resources Content
 
@@ -116,6 +129,9 @@ npm run preview
 
 ## Maintenance Notes
 
-- If homepage announcements look outdated, verify the WordPress.com site has published posts and the API endpoint is reachable.
+- If homepage announcements or events look outdated:
+  - Verify posts are published on WordPress.
+  - Verify posts are assigned to the correct category (`Announcements` or `Events`).
+  - Verify the WordPress API endpoint is reachable.
 - Keep external document links in `src/pages/resources.astro` up to date.
 - If repo name or Pages URL changes, update `astro.config.mjs` `site` and `base`.
