@@ -82,8 +82,17 @@ img {
   color: var(--muted);
 }
 
+.header-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.5rem 0 1rem;
+}
+
 .nav-toggle {
-  width: 100%;
+  position: relative;
 }
 
 .nav-toggle[open] .nav {
@@ -93,51 +102,72 @@ img {
 .nav-toggle-button {
   list-style: none;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 0.35rem 1rem;
+  padding: 0.4rem 0.85rem;
   background: #efe6db;
   color: var(--accent-strong);
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: fit-content;
+  gap: 0.5rem;
 }
 
 .nav-toggle-button::-webkit-details-marker {
   display: none;
 }
 
+.nav-toggle-icon {
+  width: 1.25rem;
+  height: 0.8rem;
+  border-top: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  position: relative;
+}
+
+.nav-toggle-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border-top: 2px solid currentColor;
+}
+
+.nav-toggle-label {
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
 .nav {
   display: none;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  font-size: 0.95rem;
-  margin-top: 1rem;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  min-width: 14rem;
+  background: #fffdf9;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  box-shadow: var(--shadow);
+  gap: 0.4rem;
+  z-index: 10;
 }
 
 .nav a {
   text-decoration: none;
   padding: 0.5rem 0.75rem;
-  border-radius: 999px;
+  border-radius: 0.6rem;
   color: var(--text);
-  background: #fffdf9;
-  border: 1px solid var(--border);
+  background: transparent;
 }
 
 .nav a[aria-current="page"],
 .nav a:hover {
   background: #efe6db;
   color: var(--accent-strong);
-}
-
-.header-inner {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1.5rem 0 1rem;
 }
 
 main {
@@ -210,31 +240,6 @@ main {
 }
 
 @media (min-width: 720px) {
-  .header-inner {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .nav-toggle {
-    width: auto;
-  }
-
-  .nav-toggle-button {
-    display: none;
-  }
-
-  .nav {
-    display: flex;
-    margin-top: 0;
-    border: none;
-  }
-
-  .nav a {
-    border: none;
-    background: transparent;
-  }
-
   .info-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
