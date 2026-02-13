@@ -281,6 +281,21 @@ main {
   background: var(--accent);
 }
 
+.form-help {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.form-error {
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 0.6rem;
+  border: 1px solid #b34a2f;
+  background: #fff2ef;
+  color: #7a1f12;
+}
+
 .events-list {
   display: grid;
   gap: 1rem;
