@@ -16,7 +16,8 @@ const announcements = await Promise.all(
   })
 );
 
-const baseUrl = import.meta.env.BASE_URL;
+const ensureTrailingSlash = (value) => (value.endsWith("/") ? value : `${value}/`);
+const baseUrl = ensureTrailingSlash(import.meta.env.BASE_URL);
 const heroSrc = `${baseUrl}stagneswithtext.png`;
 ---
 
