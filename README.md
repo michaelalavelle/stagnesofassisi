@@ -137,6 +137,7 @@ npm run preview
   - `base: "/stagnesofassisi"`
 - Pushes to `main` trigger your configured Pages workflow/publish process.
 - Manual deploy trigger is enabled via GitHub Actions `workflow_dispatch`.
+- Shared layout includes cache-control meta tags (`no-cache`, `no-store`, `must-revalidate`) to reduce stale HTML in browsers after deploys.
 
 ### Manual Deploy Trigger (For Council Members)
 
@@ -171,5 +172,6 @@ Notes:
   - Verify posts are published on WordPress.
   - Verify posts are assigned to the correct category (`Announcements` or `Events`).
   - Verify the WordPress API endpoint is reachable.
+  - Trigger a manual deploy workflow run if needed.
 - Keep external document links in `src/pages/resources.astro` up to date.
 - If repo name or Pages URL changes, update `astro.config.mjs` `site` and `base`.
