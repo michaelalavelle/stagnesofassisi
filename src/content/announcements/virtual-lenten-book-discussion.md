@@ -9,5 +9,5 @@ We are hosting a virtual Lenten book discussion of *The Tears of Things: Prophet
 **Times:** 6:30-8:00 PM CT, 7:30-9:00 PM ET, 5:30-7:00 PM MT, 4:30-6:00 PM PT
 
 **Documents:**
-- [Participant Information (PDF)](/participant-information-tears-of-things.pdf)
-- [Prayer: The Tears of Solidarity (PDF)](/prayer-the-tears-of-solidarity-crs.pdf)
+- [Participant Information (PDF)](https://michaelalavelle.github.io/stagnesofassisi/participant-information-tears-of-things.pdf)
+- [Prayer: The Tears of Solidarity (PDF)](https://michaelalavelle.github.io/stagnesofassisi/prayer-the-tears-of-solidarity-crs.pdf)
