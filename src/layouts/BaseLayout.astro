@@ -3,14 +3,15 @@ import "../styles/global.css";
 
 const { title = "St. Agnes of Assisi Fraternity" } = Astro.props;
 const pathname = Astro.url.pathname;
+const baseUrl = import.meta.env.BASE_URL;
 
 const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/about-ofs/", label: "About the OFS" },
-  { href: "/our-fraternity/", label: "Our Fraternity" },
-  { href: "/events/", label: "Events" },
-  { href: "/resources/", label: "Resources" },
-  { href: "/contact/", label: "Contact" },
+  { href: baseUrl, label: "Home" },
+  { href: `${baseUrl}about-ofs/`, label: "About the OFS" },
+  { href: `${baseUrl}our-fraternity/`, label: "Our Fraternity" },
+  { href: `${baseUrl}events/`, label: "Events" },
+  { href: `${baseUrl}resources/`, label: "Resources" },
+  { href: `${baseUrl}contact/`, label: "Contact" },
 ];
 ---
 
@@ -21,14 +22,14 @@ const navItems = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
+    <link rel="icon" href={`${baseUrl}favicon.ico`} />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
       <div class="container header-inner">
-        <a class="brand" href="/">
+        <a class="brand" href={baseUrl}>
           <strong>St. Agnes of Assisi Fraternity</strong>
           <span>Secular Franciscan Order · Tau Cross Region</span>
         </a>
