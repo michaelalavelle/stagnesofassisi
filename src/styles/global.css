@@ -277,12 +277,6 @@ main {
   background: var(--accent);
 }
 
-.form-note {
-  margin: 0.25rem 0 0;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
 .events-list {
   display: grid;
   gap: 1rem;
