@@ -99,8 +99,9 @@ const contactUrl = `${baseUrl}contact/`;
       <div class="events-list">
         {announcements.map((item) => (
           <article class="event-item">
-            <h3>{item.title}</h3>
-            <p class="event-meta">{formatDate(item.date)}</p>
+            <h3>
+              {item.title} <span class="event-meta">(Posted {formatDate(item.date)})</span>
+            </h3>
             {item.source === "wordpress" ? (
               <>
                 <div set:html={item.html}></div>

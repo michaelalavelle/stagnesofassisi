@@ -46,11 +46,12 @@ const events = wordpressEvents.length > 0 ? wordpressEvents : localEvents;
       <div class="events-list">
         {events.map((item) => (
           <article class="event-item">
-            <h3>{item.title}</h3>
-            <p class="event-meta">
-              {formatDate(item.date)}
-              {item.source === "local" && item.location ? ` - ${item.location}` : ""}
-            </p>
+            <h3>
+              {item.title} <span class="event-meta">(Posted {formatDate(item.date)})</span>
+            </h3>
+            {item.source === "local" && item.location ? (
+              <p class="event-meta">{item.location}</p>
+            ) : null}
             {item.source === "wordpress" ? <div set:html={item.html}></div> : <item.Content />}
           </article>
         ))}
