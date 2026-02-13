@@ -52,7 +52,7 @@ Primary source endpoint:
 Behavior:
 
 - Posts are filtered by category slug in `src/lib/wordpress.ts`.
-- Home announcements request category `announcements` and show up to 3 items.
+- Home announcements request category `announcements` and show up to 10 newest items.
 - Events page requests category `events` and shows matching items.
 - If WordPress fetch/filter returns no items, local content is used:
   - Home fallback: `src/content/announcements/*.md`
@@ -86,7 +86,17 @@ File: `src/pages/events.astro`
 
 - Primary source is WordPress category `events` (build-time fetch).
 - Fallback source is `src/content/events/*.md` (sorted by date ascending).
-- Rendered with title/date and event body content.
+- Rendered with item heading format: `Title (Posted DATE)`.
+- For local fallback items, location is shown under the heading when provided.
+- Event body content is rendered below the heading.
+
+## Announcements Content
+
+File: `src/pages/index.astro`
+
+- Primary source is WordPress category `announcements` (build-time fetch), capped at 10 items.
+- Fallback source is `src/content/announcements/*.md` (sorted newest-first, capped at 10).
+- Rendered with item heading format: `Title (Posted DATE)` and body content below.
 
 ## Resources Content
 
