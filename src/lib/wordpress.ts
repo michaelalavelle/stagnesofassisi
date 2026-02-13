@@ -5,7 +5,7 @@ type WordPressCategory = {
 type WordPressApiPost = {
   title?: string | { rendered?: string };
   date?: string;
-  excerpt?: string;
+  content?: string;
   categories?: Record<string, WordPressCategory>;
 };
 
@@ -17,7 +17,7 @@ export type WordPressFeedItem = {
 };
 
 const WORDPRESS_POSTS_URL =
-  "https://public-api.wordpress.com/rest/v1.1/sites/stagnesofassisiofs.wordpress.com/posts/?number=50&fields=title,date,excerpt,categories";
+  "https://public-api.wordpress.com/rest/v1.1/sites/stagnesofassisiofs.wordpress.com/posts/?number=50&fields=title,date,content,categories";
 
 const getPostCategorySlugs = (post: WordPressApiPost) =>
   Object.values(post.categories ?? {})
@@ -27,6 +27,20 @@ const getPostCategorySlugs = (post: WordPressApiPost) =>
 const getPostTitle = (post: WordPressApiPost) =>
   (typeof post.title === "string" ? post.title.trim() : post.title?.rendered?.trim()) ||
   "Announcement";
+
+const normalizeWordPressHtml = (html: string) => {
+  const withoutEmbedObjects = html.replace(/<object[\s\S]*?<\/object>/gi, "");
+  return withoutEmbedObjects.replace(/<a\s+([^>]*href=["'][^"']+["'][^>]*)>/gi, (_, attrs) => {
+    let nextAttrs = attrs;
+    if (!/\btarget=/i.test(nextAttrs)) {
+      nextAttrs += ' target="_blank"';
+    }
+    if (!/\brel=/i.test(nextAttrs)) {
+      nextAttrs += ' rel="noreferrer"';
+    }
+    return `<a ${nextAttrs}>`;
+  });
+};
 
 export const fetchWordPressPostsByCategory = async (
   categorySlug: string,
@@ -48,7 +62,7 @@ export const fetchWordPressPostsByCategory = async (
         source: "wordpress" as const,
         title: getPostTitle(post),
         date: new Date(post.date ?? Date.now()),
-        html: post.excerpt || "",
+        html: normalizeWordPressHtml(post.content || ""),
       }))
       .slice(0, limit);
   } catch {
