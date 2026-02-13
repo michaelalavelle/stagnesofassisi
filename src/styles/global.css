@@ -234,6 +234,55 @@ main {
   padding-left: 1.25rem;
 }
 
+.contact-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.contact-form label {
+  display: grid;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  font: inherit;
+  background: #fffdf9;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: 2px solid rgba(107, 63, 29, 0.3);
+  border-color: var(--accent);
+}
+
+.button {
+  background: var(--accent-strong);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.65rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  justify-self: start;
+}
+
+.button:hover,
+.button:focus {
+  background: var(--accent);
+}
+
+.form-note {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
 .events-list {
   display: grid;
   gap: 1rem;
