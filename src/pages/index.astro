@@ -20,6 +20,7 @@ const ensureTrailingSlash = (value) => (value.endsWith("/") ? value : `${value}/
 const baseUrl = ensureTrailingSlash(import.meta.env.BASE_URL);
 const heroSrc = `${baseUrl}stagneswithtext.png`;
 const brochureUrl = `${baseUrl}st-agnes-fraternity-brochure.pdf`;
+const contactUrl = `${baseUrl}contact/`;
 ---
 
 <BaseLayout title="St. Agnes of Assisi Fraternity | Home">
@@ -68,6 +69,10 @@ const brochureUrl = `${baseUrl}st-agnes-fraternity-brochure.pdf`;
       <a href={brochureUrl} target="_blank" rel="noreferrer">
         St. Agnes of Assisi Fraternity Brochure (PDF)
       </a>
+    </p>
+    <p>
+      Then <a href={contactUrl}>reach out to us using our contact form</a> to
+      arrange a visit.
     </p>
   </section>
 
