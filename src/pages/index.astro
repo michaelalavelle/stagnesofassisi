@@ -5,16 +5,49 @@ import { getCollection } from "astro:content";
 const formatDate = (value) =>
   new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(value);
 
-const rawAnnouncements = (await getCollection("announcements"))
+const wordpressFeedUrl =
+  "https://stagnesofassisiofs.wordpress.com/wp-json/wp/v2/posts?per_page=3&_fields=title,date,link,excerpt";
+
+const getWordPressAnnouncements = async () => {
+  try {
+    const response = await fetch(wordpressFeedUrl);
+    if (!response.ok) {
+      return [];
+    }
+
+    const posts = await response.json();
+    return posts.map((post) => ({
+      source: "wordpress",
+      title: post?.title?.rendered?.trim() || "Announcement",
+      date: new Date(post.date),
+      html: post?.excerpt?.rendered || "",
+      link: post.link,
+    }));
+  } catch {
+    return [];
+  }
+};
+
+const wordpressAnnouncements = await getWordPressAnnouncements();
+
+const rawLocalAnnouncements = (await getCollection("announcements"))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 3);
 
-const announcements = await Promise.all(
-  rawAnnouncements.map(async (item) => {
+const localAnnouncements = await Promise.all(
+  rawLocalAnnouncements.map(async (item) => {
     const { Content } = await item.render();
-    return { ...item, Content };
+    return {
+      source: "local",
+      title: item.data.title,
+      date: item.data.date,
+      Content,
+    };
   })
 );
+
+const announcements =
+  wordpressAnnouncements.length > 0 ? wordpressAnnouncements : localAnnouncements;
 
 const ensureTrailingSlash = (value) => (value.endsWith("/") ? value : `${value}/`);
 const baseUrl = ensureTrailingSlash(import.meta.env.BASE_URL);
@@ -84,9 +117,20 @@ const contactUrl = `${baseUrl}contact/`;
       <div class="events-list">
         {announcements.map((item) => (
           <article class="event-item">
-            <h3>{item.data.title}</h3>
-            <p class="event-meta">{formatDate(item.data.date)}</p>
-            <item.Content />
+            <h3>{item.title}</h3>
+            <p class="event-meta">{formatDate(item.date)}</p>
+            {item.source === "wordpress" ? (
+              <>
+                <div set:html={item.html}></div>
+                <p>
+                  <a href={item.link} target="_blank" rel="noreferrer">
+                    Read more on WordPress
+                  </a>
+                </p>
+              </>
+            ) : (
+              <item.Content />
+            )}
           </article>
         ))}
       </div>
