@@ -37,7 +37,7 @@ const events = await Promise.all(
             <h3>{item.data.title}</h3>
             <p class="event-meta">
               {formatDate(item.data.date)}
-              {item.data.location ? ` · ${item.data.location}` : ""}
+              {item.data.location ? ` - ${item.data.location}` : ""}
             </p>
             <item.Content />
           </article>
