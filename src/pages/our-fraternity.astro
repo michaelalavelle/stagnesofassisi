@@ -2,7 +2,6 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 const ensureTrailingSlash = (value) => (value.endsWith("/") ? value : `${value}/`);
 const baseUrl = ensureTrailingSlash(import.meta.env.BASE_URL);
-const brochureUrl = `${baseUrl}st-agnes-fraternity-brochure.pdf`;
 const leadershipPhoto = `${baseUrl}leadership.jpg`;
 ---
 
@@ -38,21 +37,4 @@ const leadershipPhoto = `${baseUrl}leadership.jpg`;
     </ul>
   </section>
 
-  <section class="card" style="margin-top: 2rem;">
-    <h2 class="section-title">Formation Overview</h2>
-    <p>
-      Formation in the OFS is a gradual process of learning, prayer, and
-      discernment. We begin with inquiry, continue through candidacy and
-      formation, and make a lifelong commitment through profession.
-    </p>
-    <p>
-      If you are interested in learning more about our fraternity and the
-      Secular Franciscan way of life, please read our brochure.
-    </p>
-    <p>
-      <a href={brochureUrl} target="_blank" rel="noreferrer">
-        St. Agnes of Assisi Fraternity Brochure (PDF)
-      </a>
-    </p>
-  </section>
 </BaseLayout>
